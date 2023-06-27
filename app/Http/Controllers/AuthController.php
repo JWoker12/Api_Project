@@ -31,6 +31,7 @@ class AuthController extends Controller
         return response()->json([
             'status' => true,
             'message' => 'User creted successfully',
+            'user' => $user,
             'token' => $user->createToken("API TOKEN")->plainTextToken
         ], 200);
     }
@@ -48,18 +49,11 @@ class AuthController extends Controller
                 'errors' => $validator->errors()->all()
             ], 400);
         }
-        if(!Auth::attempt($request->only('email', 'password'))){
-            return response()->json([
-                'status' => false,
-                'errors' => 'Unauthorized'
-            ], 401);
-        }
         $user = User::where('email', $request->email)->first();
         return response()->json([
             'status' => true,
             'message' => 'User logged in successfully',
             'user' => $user,
-            'role' => $user->role,
             'token' => $user->createToken('auth_token', [$user->role])->plainTextToken
         ], 200);
     }

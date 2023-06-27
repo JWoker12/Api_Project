@@ -21,7 +21,7 @@ class ProjectController extends Controller
         if (auth('sanctum')->user()->role === 'admin') {
             return ProjectResource::collection(Project::all());
         }
-        return ProjectResource::collection(User::find(Auth::user()->id)->projectAssigned);
+        return ProjectResource::collection(User::find(auth('sanctum')->user()->id)->projectAssigned);
     }
 
     /**
